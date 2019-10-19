@@ -13,18 +13,24 @@ for user in $(ls $BASEDIR/keys); do
 done
 sed -i "s/^%sudo/# %sudo/" /etc/sudoers
 echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+touch /var/lib/cloud/instance/warnings/.skip
 
 # Initialize disks
-parted /dev/sdc --script -- mklabel gpt mkpart primary 0% 100%
-parted /dev/sdd --script -- mklabel gpt mkpart primary 0% 100%
-mkfs.ext4 /dev/sdc1
-mkfs.ext4 /dev/sdd1
-mkdir -p /volumes/v1
-mkdir -p /volumes/v2
-mount /dev/sdc1 /volumes/v1
-mount /dev/sdd1 /volumes/v2
-chown -R jenkins:jenkins /volumes
-touch /var/lib/cloud/instance/warnings/.skip
+uninit_dsks=$(lsblk -r --output NAME,MOUNTPOINT | awk -F \/ '/sd/ { dsk=substr($1,1,3);dsks[dsk]+=1 } END { for ( i in dsks ) { if (dsks[i]==1) print i } }')
+dsks=()
+for dsk in $uninit_dsks; do
+  parted /dev/$dsk --script -- mklabel gpt mkpart primary 0% 100%;
+  dsks+=("/dev/${dsk}1")
+done;
+sleep 5
+echo y | mdadm --create --verbose --level=0 --metadata=1.2 --raid-devices=${#dsks[@]} /dev/md/build "${dsks[@]}"
+echo 'DEVICE partitions' > /etc/mdadm.conf
+mdadm --detail --scan >> /etc/mdadm.conf
+mdadm --assemble --scan
+mkfs.ext4 /dev/md/build
+mkdir -p /raid
+mount /dev/md/build /raid
+chown -R jenkins:jenkins /raid
 
 # Android build env setup
 git config --global user.email "botatosalad@deletescape.ch"
