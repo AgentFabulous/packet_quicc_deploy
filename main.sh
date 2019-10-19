@@ -16,6 +16,8 @@ echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 # Initialize disks
 parted /dev/sdc --script -- mklabel gpt mkpart primary 0% 100%
 parted /dev/sdd --script -- mklabel gpt mkpart primary 0% 100%
+mkfs.ext4 /dev/sdc1
+mkfs.ext4 /dev/sdd1
 mkdir -p /volumes/v1
 mkdir -p /volumes/v2
 mount /dev/sdc1 /volumes/v1
