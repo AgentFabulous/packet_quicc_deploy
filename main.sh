@@ -31,3 +31,7 @@ git clone https://github.com/akhilnarang/scripts ~/.android-scripts
 cd ~/.android-scripts
 bash setup/android_build_env.sh
 cd -
+
+# Cleanup
+rm -rf ~/.android-scripts
+rm -rf ~/.setup-scripts
