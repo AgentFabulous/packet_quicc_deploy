@@ -24,3 +24,4 @@ mkdir -p /volumes/v2
 mount /dev/sdc1 /volumes/v1
 mount /dev/sdd1 /volumes/v2
 chown -R jenkins:jenkins /volumes
+touch /var/lib/cloud/instance/warnings/.skip
