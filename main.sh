@@ -27,7 +27,7 @@ chown -R jenkins:jenkins /volumes
 touch /var/lib/cloud/instance/warnings/.skip
 
 # Android build env setup
-git clone https://github.com/akhilnarang/scripts ~/.android-scripts
+git clone https://github.com/AgentFabulous/scripts ~/.android-scripts
 cd ~/.android-scripts
 bash setup/android_build_env.sh
 cd -
