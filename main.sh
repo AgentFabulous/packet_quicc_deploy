@@ -7,7 +7,7 @@ BASEDIR=$(dirname "$0")
 for user in $(ls $BASEDIR/keys); do
   useradd -m $user
   usermod -aG sudo $user 
-  cp -R $BASEDIR/keys/$user/* /home/$user/
+  cp -R $BASEDIR/keys/$user/. /home/$user/
   echo "chown -R $user:$user /home/$user";
 done
 sed -i "s/^%sudo/# %sudo/" /etc/sudoers
