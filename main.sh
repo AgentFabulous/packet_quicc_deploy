@@ -27,6 +27,8 @@ chown -R jenkins:jenkins /volumes
 touch /var/lib/cloud/instance/warnings/.skip
 
 # Android build env setup
+git config --global user.email "botatosalad@deletescape.ch"
+git config --global user.name "Botato Salad"
 git clone https://github.com/AgentFabulous/scripts ~/.android-scripts
 cd ~/.android-scripts
 bash setup/android_build_env.sh
