@@ -40,6 +40,9 @@ cd ~/.android-scripts
 bash setup/android_build_env.sh
 cd -
 
+# Update CloudFlare DNS records
+$BASEDIR/cloudflare-update.sh "$@"
+
 # Cleanup
 rm -rf ~/.android-scripts
 rm -rf ~/.setup-scripts
