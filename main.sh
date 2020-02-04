@@ -22,6 +22,12 @@ for dsk in $uninit_dsks; do
   parted /dev/$dsk --script -- mklabel gpt mkpart primary 0% 100%;
   dsks+=("/dev/${dsk}1")
 done;
+
+NVME_DEV="/dev/nvme0n1"
+if [ -e "$NVME_DEV" ]; then
+  dsks+=("$NVME_DEV")
+fi
+
 sleep 5
 echo y | mdadm --create --verbose --level=0 --metadata=1.2 --raid-devices=${#dsks[@]} /dev/md/build "${dsks[@]}"
 echo 'DEVICE partitions' > /etc/mdadm.conf
