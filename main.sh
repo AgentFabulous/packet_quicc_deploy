@@ -36,6 +36,11 @@ mdadm --assemble --scan
 mkfs.ext4 /dev/md/build
 mkdir -p /raid
 mount /dev/md/build /raid
+
+# Populate fstab
+RAID_UUID=$(blkid -s UUID -o value /dev/md/build)
+echo -e "UUID=${RAID_UUID}\t/raid\text4\trw,relatime,defaults\t0\t1" >> /etc/fstab
+
 chown -R jenkins:jenkins /raid
 
 # Android build env setup
