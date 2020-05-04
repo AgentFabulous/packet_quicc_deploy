@@ -6,21 +6,12 @@ record_name="$2.$3"
 proxied="$4"
 
 ip=$(ip addr | grep bond0 | grep inet | awk '{$1=$1};1' | cut -d \  -f 2 | cut -d \/ -f 1 | head -n 1)
-ip_file="ip.txt"
 id_file="cloudflare.ids"
 
 if ! [[ "$ip" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
     message="Fetched IP does not look valid! Quitting"
     echo -e "$message"
     exit 1
-fi
-
-if [ -f $ip_file ]; then
-    old_ip=$(cat $ip_file)
-    if [ $ip == $old_ip ]; then
-        echo "IP has not changed."
-        exit 0
-    fi
 fi
 
 if [ -f $id_file ] && [ $(wc -l $id_file | cut -d " " -f 1) == 2 ]; then
@@ -49,6 +40,5 @@ case "$update" in
     exit 1;;
   *)
       message="IP changed to: $ip"
-    echo "$ip" > $ip_file
     echo "$message";;
 esac
