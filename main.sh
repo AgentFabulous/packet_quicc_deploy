@@ -43,7 +43,7 @@ echo -e "UUID=${RAID_UUID}\t/raid\text4\trw,relatime,defaults\t0\t1" >> /etc/fst
 
 # h5ai setup
 DEBIAN_FRONTEND=noninteractive apt-get update
-DEBIAN_FRONTEND=noninteractive apt-get install nginx php7.2-fpm php7.2-mysql php7.2-mbstring php7.2-curl php7.2-dom -y
+DEBIAN_FRONTEND=noninteractive apt-get install unzip nginx php7.2-fpm php7.2-mysql php7.2-mbstring php7.2-curl php7.2-dom -y
 mkdir -p /raid/h5ai
 wget https://release.larsjung.de/h5ai/h5ai-0.29.2.zip -O /raid/h5ai.zip
 unzip /raid/h5ai.zip -d /raid/h5ai/
