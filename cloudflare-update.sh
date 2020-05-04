@@ -3,7 +3,7 @@
 api_token="$1"
 zone_name="$3"
 record_name="$2.$3"
-proxied="false"
+proxied="$4"
 
 ip=$(ip addr | grep bond0 | grep inet | awk '{$1=$1};1' | cut -d \  -f 2 | cut -d \/ -f 1 | head -n 1)
 ip_file="ip.txt"

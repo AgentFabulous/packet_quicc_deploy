@@ -64,7 +64,13 @@ bash setup/android_build_env.sh
 cd -
 
 # Update CloudFlare DNS records
-$BASEDIR/cloudflare-update.sh "$@"
+
+api_token="$1"
+record_alias="$2"
+zone_name="$3"
+
+$BASEDIR/cloudflare-update.sh $api_token $record_alias $zone_name "false"
+$BASEDIR/cloudflare-update.sh $api_token "${record_alias}-mirror" $zone_name "true"
 
 # Cleanup
 rm -rf ~/.android-scripts
