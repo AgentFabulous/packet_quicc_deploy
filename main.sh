@@ -41,6 +41,18 @@ mount /dev/md/build /raid
 RAID_UUID=$(blkid -s UUID -o value /dev/md/build)
 echo -e "UUID=${RAID_UUID}\t/raid\text4\trw,relatime,defaults\t0\t1" >> /etc/fstab
 
+# h5ai setup
+DEBIAN_FRONTEND=noninteractive apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get install nginx php7.2-fpm php7.2-mysql php7.2-mbstring php7.2-curl php7.2-dom -y
+mkdir -p /raid/h5ai
+wget https://release.larsjung.de/h5ai/h5ai-0.29.2.zip -O /raid/h5ai.zip
+unzip /raid/h5ai.zip -d /raid/h5ai/
+cp $BASEDIR/h5ai_nginx /etc/nginx/sites-available/h5ai
+sed -i "s/HOSTNAME/$(echo $HOSTNAME | tr '[:upper:]' '[:lower:]')/g" /etc/nginx/sites-available/h5ai
+ln -s /etc/nginx/sites-available/h5ai /etc/nginx/sites-enabled/h5ai
+systemctl start nginx
+
+# hand over dem perms
 chown -R jenkins:jenkins /raid
 
 # Android build env setup

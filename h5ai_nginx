@@ -1,0 +1,15 @@
+server {
+	listen 80;
+	listen [::]:80;
+	server_name HOSTNAME-mirror.potatoproject.co;
+
+	root /raid/h5ai;
+
+	index index.php /_h5ai/public/index.php;
+
+	location ~ \.php$ {
+		include snippets/fastcgi-php.conf;
+		fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+		include fastcgi_params;
+	}
+}
