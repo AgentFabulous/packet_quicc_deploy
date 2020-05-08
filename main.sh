@@ -63,8 +63,21 @@ cd ~/.android-scripts
 bash setup/android_build_env.sh
 cd -
 
-# Update CloudFlare DNS records
+# Setup server-sync
+mkdir -p /raid/secrets
+chown -R jenkins:jenkins /raid/secrets
+DEBIAN_FRONTEND=noninteractive apt-get install python3-pip -y
+su jenkins -c "pip3 install -r $BASEDIR/server-sync-py/requirements.txt"
+cp $BASEDIR/server-sync-py/server-sync.py /usr/bin/
+cp $BASEDIR/server-sync-py/server-sync.service /lib/systemd/system/
+sed -i "s/PRIV_AUTH/$4/g" /lib/systemd/system/server-sync.service
+sed -i "s/PRIV_FB/$5/g" /lib/systemd/system/server-sync.service
+sed -i "s/PRIV_SF/$6/g" /lib/systemd/system/server-sync.service
+systemctl reload-daemon
+systemctl enable server-sync
+systemctl start server-sync
 
+# Update CloudFlare DNS records
 api_token="$1"
 record_alias="$2"
 zone_name="$3"
