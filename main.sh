@@ -67,7 +67,9 @@ cd -
 mkdir -p /raid/secrets
 chown -R jenkins:jenkins /raid/secrets
 DEBIAN_FRONTEND=noninteractive apt-get install python3-pip -y
-su jenkins -c "pip3 install -r $BASEDIR/server-sync-py/requirements.txt"
+cp $BASEDIR/server-sync-py/requirements.txt /home/jenkins/
+chown -R jenkins:jenkins /home/jenkins/requirements.txt
+su jenkins -c "pip3 install -r ~/requirements.txt; rm ~/requirements.txt"
 cp $BASEDIR/server-sync-py/server-sync.py /usr/bin/
 cp $BASEDIR/server-sync-py/server-sync.service /lib/systemd/system/
 sed -i "s/PRIV_AUTH/$4/g" /lib/systemd/system/server-sync.service
