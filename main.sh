@@ -47,6 +47,7 @@ DEBIAN_FRONTEND=noninteractive apt-get install unzip nginx php7.2-fpm php7.2-mys
 mkdir -p /raid/h5ai
 wget https://release.larsjung.de/h5ai/h5ai-0.29.2.zip -O /raid/h5ai.zip
 unzip /raid/h5ai.zip -d /raid/h5ai/
+sed -i "s/\"hidden\": \[\"^\\\\\\\\.\", \"^_h5ai\"\],/\"hidden\": \[\"^\\\\\\\\.\", \"^_h5ai\"\, \"__private__\", \"__internal__\"],/" /raid/h5ai/_h5ai/private/conf/options.json
 cp $BASEDIR/h5ai_nginx /etc/nginx/sites-available/h5ai
 sed -i "s/HOSTNAME/$(echo $HOSTNAME | tr '[:upper:]' '[:lower:]')/g" /etc/nginx/sites-available/h5ai
 ln -s /etc/nginx/sites-available/h5ai /etc/nginx/sites-enabled/h5ai
